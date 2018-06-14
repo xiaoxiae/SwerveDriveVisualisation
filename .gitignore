@@ -1,0 +1,6 @@
+//Folders
+\.idea/
+out/
+
+//Extensions
+*.iml
