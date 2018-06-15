@@ -65,6 +65,18 @@ class Input {
             else values[i] = 0;
         }
 
+        // Normalize the values for x1 and y1 to be spherical
+        float coordinateScaleValue = 1 / (Math.max(Math.abs(values[0]), Math.abs(values[1])));
+
+        float newX = values[0] * coordinateScaleValue;
+        float newY = values[1] * coordinateScaleValue;
+
+        float lengthProportion = 1 / (float)Math.sqrt(newX * newX + newY * newY);
+
+        // Scale x1 and y1 to fit into the circle
+        values[0] *= lengthProportion;
+        values[1] *= lengthProportion;
+
         return values;
     }
 }
