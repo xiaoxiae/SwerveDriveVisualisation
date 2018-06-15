@@ -34,11 +34,8 @@ public class Main extends PApplet {
             H = Math.abs(mouseY - height / 2) * 2;
         }
 
-        // Draw the chassis
-        rectMode(CENTER);
-        strokeWeight(6);
-        strokeJoin(ROUND);
-        rect(width / 2, height / 2, W, H);
+        // Draw the chassis of the robot
+        drawChassis(W, H);
 
         // Values of the controller
         float[] values = input.getValues();
@@ -46,5 +43,31 @@ public class Main extends PApplet {
         float x1 = values[0];
         float y1 = values[1];
         float x2 = values[2];
+    }
+
+    /**
+     * Draws the chasis of these parameters
+     * @param W The width of the chassis (in pixels).
+     * @param H The height of the chassis (in pixels).
+     */
+    void drawChassis(int W, int H) {
+        // The big chassis rectangle
+        fill(255);
+        rectMode(CENTER);
+        strokeWeight(3.5f);
+        strokeJoin(ROUND);
+
+        rect(width / 2, height / 2, W, H);
+
+        // Draw the sizes of W and H
+        fill(0);
+
+        // Text for the right line (H)
+        textAlign(LEFT, CENTER);
+        text("H = " + H, width / 2 + W / 2 + 10, height / 2);
+
+        // Text for the top line (W)
+        textAlign(CENTER, BOTTOM);
+        text("W = " + W, width / 2, height / 2 - H / 2 - 10);
     }
 }
