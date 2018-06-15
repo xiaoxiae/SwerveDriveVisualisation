@@ -2,6 +2,8 @@ package main;
 
 import processing.core.*;
 
+import java.text.DecimalFormat;
+
 public class Main extends PApplet {
     // Input object
     Input input;
@@ -73,5 +75,17 @@ public class Main extends PApplet {
         // Text for the top line (W)
         textAlign(CENTER, BOTTOM);
         text("W = " + W, center_x, center_y - H / 2 - 10);
+
+        strokeWeight(1.5f);
+        line(center_x - W / 2, center_y, center_x + W / 2, center_y);
+        line(center_x, center_y - H / 2, center_x, center_y + H / 2);
+        line(center_x - W/2, center_y + H/2, center_x + W/2, center_y - H/2);
+
+        textAlign(CENTER, TOP);
+        pushMatrix();
+        translate(center_x + W/4, center_y - H/4);
+        rotate((float)-Math.atan2(H, W));
+        text("r = " + new DecimalFormat("#.00").format(Math.sqrt(W * W + H * H)), 0, 0);
+        popMatrix();
     }
 }
