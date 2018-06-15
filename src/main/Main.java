@@ -6,11 +6,11 @@ import java.text.DecimalFormat;
 
 public class Main extends PApplet {
     // Input object
-    Input input;
+    private Input input;
 
     // Variables of the swerve drivebase
-    int W = 0;
-    int H = 0;
+    private int W = 0;
+    private int H = 0;
 
     static public void main(String[] passedArgs) {
         PApplet.main(Main.class.getName());
@@ -58,7 +58,7 @@ public class Main extends PApplet {
      * @param x_vector The x component of a normalized vector.
      * @param y_vector The y component of a normalized vector.
      */
-    void drawVector(float x_origin, float y_origin, float x_vector, float y_vector, float scale) {
+    private void drawVector(float x_origin, float y_origin, float x_vector, float y_vector, float scale) {
         strokeWeight(2);
         line(x_origin, y_origin, x_origin + x_vector * scale, y_origin + y_vector * scale);
 
@@ -72,12 +72,12 @@ public class Main extends PApplet {
     /**
      * Draws the chasis of these parameters
      *
-     * @param W The width of the chassis (in pixels).
-     * @param H The height of the chassis (in pixels).
+     * @param W        The width of the chassis (in pixels).
+     * @param H        The height of the chassis (in pixels).
      * @param center_x The x value of the center of the chassis.
      * @param center_y The y value of the center of the chassis.
      */
-    void drawChassis(int W, int H, int center_x, int center_y) {
+    private void drawChassis(int W, int H, int center_x, int center_y) {
         // The big chassis rectangle
         fill(255);
         stroke(0);
@@ -92,21 +92,21 @@ public class Main extends PApplet {
 
         // Text for the right line (H)
         textAlign(LEFT, CENTER);
-        text("H = " + H, center_x + W / 2 + 10, center_y);
+        text("H = " + H, center_x + W / 2 + 7, center_y);
 
         // Text for the top line (W)
         textAlign(CENTER, BOTTOM);
-        text("W = " + W, center_x, center_y - H / 2 - 10);
+        text("W = " + W, center_x, center_y - H / 2 - 4.5f);
 
         strokeWeight(1.5f);
         line(center_x - W / 2, center_y, center_x + W / 2, center_y);
         line(center_x, center_y - H / 2, center_x, center_y + H / 2);
-        line(center_x - W/2, center_y + H/2, center_x + W/2, center_y - H/2);
+        line(center_x - W / 2, center_y + H / 2, center_x + W / 2, center_y - H / 2);
 
         textAlign(CENTER, TOP);
         pushMatrix();
-        translate(center_x + W/4, center_y - H/4);
-        rotate((float)-Math.atan2(H, W));
+        translate(center_x + W / 4, center_y - H / 4);
+        rotate((float) -Math.atan2(H, W));
         text("r = " + new DecimalFormat("#.00").format(Math.sqrt(W * W + H * H)), 0, 0);
         popMatrix();
     }

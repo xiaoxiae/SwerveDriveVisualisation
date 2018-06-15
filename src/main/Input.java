@@ -12,7 +12,7 @@ class Input {
     private Component.Identifier rotationAxis;
 
     // Deadzone value
-    static float deadzone = 0.1f;
+    private static float deadzone = 0.1f;
 
     Input(String controllerName, String xAxisName, String yAxisName, String rotationAxisName) {
         // All controllers that the program sees
@@ -66,12 +66,16 @@ class Input {
         }
 
         // Normalize the values for x1 and y1 to be spherical
-        float coordinateScaleValue = 1 / (Math.max(Math.abs(values[0]), Math.abs(values[1])));
 
-        float newX = values[0] * coordinateScaleValue;
-        float newY = values[1] * coordinateScaleValue;
+        // A constant to scale the pair of coordinates to their maximum length (one or both will be one)
+        float maximumCoordDistanceConstant = 1 / (Math.max(Math.abs(values[0]), Math.abs(values[1])));
 
-        float lengthProportion = 1 / (float)Math.sqrt(newX * newX + newY * newY);
+        // Scale the newX and newY to their maximum length within the -1 and 1 range
+        float newX = values[0] * maximumCoordDistanceConstant;
+        float newY = values[1] * maximumCoordDistanceConstant;
+
+        // The proportion by which to multiply the original coordinates to scale them back
+        float lengthProportion = 1 / (float) Math.sqrt(newX * newX + newY * newY);
 
         // Scale x1 and y1 to fit into the circle
         values[0] *= lengthProportion;
