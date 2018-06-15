@@ -16,15 +16,13 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
-
         input = new Input("Logitech Extreme 3D", "X Axis", "Y Axis", "Z Rotation");
-
     }
 
     @Override
     public void draw() {
         // Values of the controller
-        float[] values = input.getAxisValues();
+        float[] values = input.getValues();
 
         float x1 = values[0];
         float y1 = values[1];

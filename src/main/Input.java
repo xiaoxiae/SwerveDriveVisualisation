@@ -11,6 +11,9 @@ class Input {
     private Component.Identifier yAxis;
     private Component.Identifier rotationAxis;
 
+    // Deadzone value
+    static float deadzone = 0.1f;
+
     Input(String controllerName, String xAxisName, String yAxisName, String rotationAxisName) {
         // All controllers that the program sees
         Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
@@ -36,7 +39,7 @@ class Input {
      *
      * @return A float[] of values between -1 and +1 representing the positions of the axes on the controller.
      */
-    float[] getAxisValues() {
+    float[] getRawValues() {
         controller.poll();
 
         return new float[]{
@@ -44,5 +47,24 @@ class Input {
                 controller.getComponent(yAxis).getPollData(),
                 controller.getComponent(rotationAxis).getPollData()
         };
+    }
+
+    /**
+     * Returns the values of the 3 defined axes on the controller with deadzone clearance.
+     *
+     * @return A float[] of values between -1 and +1 representing the positions of the axes on the controller,
+     * with the deadzone values turned into zero and the range shifted.
+     */
+    float[] getValues() {
+        float[] values = getRawValues();
+
+        // Shift all values using the c + (d - c) / (b - a) (value[i] - a) equation
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] > deadzone) values[i] = 1 / (1 - deadzone) * (values[i] - deadzone);
+            else if (values[i] < -deadzone) values[i] = -1 + 1 / (-deadzone + 1) * (values[i] + 1);
+            else values[i] = 0;
+        }
+
+        return values;
     }
 }
