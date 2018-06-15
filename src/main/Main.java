@@ -45,6 +45,28 @@ public class Main extends PApplet {
         float x1 = values[0];
         float y1 = values[1];
         float x2 = values[2];
+
+        // Draw the vector of the direction to which the robot is heading
+        if (x1 != 0 || y1 != 0) drawVector(width / 2, height / 2, x1, y1, 50);
+    }
+
+    /**
+     * Draws a normalized vector from certain coordinates, scaled to pixels with the scale variable.
+     *
+     * @param x_origin The x coordinate of the origin of the vector.
+     * @param y_origin The y coordinate of the origin of the vector.
+     * @param x_vector The x component of a normalized vector.
+     * @param y_vector The y component of a normalized vector.
+     */
+    void drawVector(float x_origin, float y_origin, float x_vector, float y_vector, float scale) {
+        strokeWeight(2);
+        line(x_origin, y_origin, x_origin + x_vector * scale, y_origin + y_vector * scale);
+
+        pushMatrix();
+        translate(x_origin + x_vector * scale, y_origin + y_vector * scale);
+        rotate(atan2(y_vector, x_vector));
+        triangle(0, 0, -8, 4, -8, -4);
+        popMatrix();
     }
 
     /**
