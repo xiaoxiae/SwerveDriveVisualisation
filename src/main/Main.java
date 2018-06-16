@@ -47,9 +47,6 @@ public class Main extends PApplet {
             };
         }
 
-        // Draw the chassis of the robot
-        drawChassis(W, H, width / 2, height / 2);
-
         // Values of the controller
         float[] values = input.getValues();
 
@@ -65,9 +62,35 @@ public class Main extends PApplet {
 
         if (motorCoordinates != null) {
             for (int i = 0; i < motorCoordinates.length; i++) {
+                drawMotor(motorCoordinates[i][0], motorCoordinates[i][1], (float) Math.atan2(speedVectors[i][0], speedVectors[i][1]));
                 drawVector(motorCoordinates[i][0], motorCoordinates[i][1], speedVectors[i][0], speedVectors[i][1], 30);
             }
         }
+
+        // Draw the chassis of the robot
+        if (W != 0 && H != 0) drawChassis(W, H, width / 2, height / 2);
+    }
+
+    /**
+     * Draw a motor at specified coordinates, turned by an angle.
+     *
+     * @param x1    The x coordinate of the motor.
+     * @param y1    The y coordinate of the motor.
+     * @param angle The angle that the motor is turned by.
+     */
+    private void drawMotor(float x1, float y1, float angle) {
+        fill(255);
+        stroke(0);
+        rectMode(CENTER);
+        strokeWeight(2.5f);
+        strokeJoin(ROUND);
+
+        // Translate and rotate the rectangle
+        pushMatrix();
+        translate(x1, y1);
+        rotate(-angle);
+        rect(0, 0, 20, 45);
+        popMatrix();
     }
 
     /**
@@ -142,6 +165,7 @@ public class Main extends PApplet {
 
         // The length of the vector
         strokeWeight(1);
+        fill(0);
         textAlign(LEFT, CENTER);
         text(new DecimalFormat("0.00").format(Math.sqrt(x_v * x_v + y_v * y_v)), x2 + 7, y2);
 
@@ -164,7 +188,7 @@ public class Main extends PApplet {
      */
     private void drawChassis(int W, int H, int center_x, int center_y) {
         // The big chassis rectangle
-        fill(255);
+        noFill();
         stroke(0);
         rectMode(CENTER);
         strokeWeight(3.5f);
