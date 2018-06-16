@@ -65,21 +65,22 @@ class Input {
             else values[i] = 0;
         }
 
-        // Normalize the values for x1 and y1 to be spherical
+        // To prevent NaN in the results
+        if (values[0] != 0 && values[1] != 0) {
+            // A constant to scale the pair of coordinates to their maximum length (one or both will be one)
+            float maximumCoordDistanceConstant = 1 / (Math.max(Math.abs(values[0]), Math.abs(values[1])));
 
-        // A constant to scale the pair of coordinates to their maximum length (one or both will be one)
-        float maximumCoordDistanceConstant = 1 / (Math.max(Math.abs(values[0]), Math.abs(values[1])));
+            // Scale the newX and newY to their maximum length within the -1 and 1 range
+            float newX = values[0] * maximumCoordDistanceConstant;
+            float newY = values[1] * maximumCoordDistanceConstant;
 
-        // Scale the newX and newY to their maximum length within the -1 and 1 range
-        float newX = values[0] * maximumCoordDistanceConstant;
-        float newY = values[1] * maximumCoordDistanceConstant;
+            // The proportion by which to multiply the original coordinates to scale them back
+            float lengthProportion = 1 / (float) Math.sqrt(newX * newX + newY * newY);
 
-        // The proportion by which to multiply the original coordinates to scale them back
-        float lengthProportion = 1 / (float) Math.sqrt(newX * newX + newY * newY);
-
-        // Scale x1 and y1 to fit into the circle
-        values[0] *= lengthProportion;
-        values[1] *= lengthProportion;
+            // Scale x1 and y1 to fit into the circle
+            values[0] *= lengthProportion;
+            values[1] *= lengthProportion;
+        }
 
         return values;
     }
