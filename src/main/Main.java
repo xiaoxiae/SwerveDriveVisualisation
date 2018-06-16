@@ -53,28 +53,32 @@ public class Main extends PApplet {
     /**
      * Draws a normalized vector from certain coordinates, scaled to pixels with the scale variable.
      *
-     * @param x_origin The x coordinate of the origin of the vector.
-     * @param y_origin The y coordinate of the origin of the vector.
-     * @param x_vector The x component of a normalized vector.
-     * @param y_vector The y component of a normalized vector.
+     * @param x1  The x coordinate of the origin of the vector.
+     * @param y1  The y coordinate of the origin of the vector.
+     * @param x_v The x component of a normalized vector.
+     * @param y_v The y component of a normalized vector.
      */
-    private void drawVector(float x_origin, float y_origin, float x_vector, float y_vector, float scale) {
+    private void drawVector(float x1, float y1, float x_v, float y_v, float scale) {
+        // If the vector is of length 0
+        if (x_v == 0 && y_v == 0) return;
+
+        float x2 = x1 + x_v * scale;
+        float y2 = y1 + y_v * scale;
+
+        // Draw the line of the vector
         strokeWeight(2);
-        line(x_origin, y_origin, x_origin + x_vector * scale, y_origin + y_vector * scale);
-
-        pushMatrix();
-
-        // Translate to the end of the vector
-        translate(x_origin + x_vector * scale, y_origin + y_vector * scale);
+        line(x1, y1, x2, y2);
 
         // The length of the vector
         strokeWeight(1);
         textAlign(LEFT, CENTER);
-        text(new DecimalFormat("0.00").format(Math.sqrt(x_vector * x_vector + y_vector * y_vector)), 7, 0);
+        text(new DecimalFormat("0.00").format(Math.sqrt(x_v * x_v + y_v * y_v)), x2 + 7, y2);
 
-        // Draw triangle
+        // For drawing the triangle of the arrow and the text
+        pushMatrix();
+        translate(x2, y2);
         strokeWeight(1.5f);
-        rotate(atan2(y_vector, x_vector));
+        rotate(atan2(y_v, x_v));
         triangle(0, 0, -8, 4, -8, -4);
         popMatrix();
     }
