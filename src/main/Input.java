@@ -12,7 +12,7 @@ class Input {
     private Component.Identifier rotationAxis;
 
     // Deadzone value
-    private static float deadzone = 0.1f;
+    private static float deadzone = 0.06f;
 
     Input(String controllerName, String xAxisName, String yAxisName, String rotationAxisName) {
         // All controllers that the program sees
