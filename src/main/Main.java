@@ -63,7 +63,17 @@ public class Main extends PApplet {
         line(x_origin, y_origin, x_origin + x_vector * scale, y_origin + y_vector * scale);
 
         pushMatrix();
+
+        // Translate to the end of the vector
         translate(x_origin + x_vector * scale, y_origin + y_vector * scale);
+
+        // The length of the vector
+        strokeWeight(1);
+        textAlign(LEFT, CENTER);
+        text(new DecimalFormat("0.00").format(Math.sqrt(x_vector * x_vector + y_vector * y_vector)), 7, 0);
+
+        // Draw triangle
+        strokeWeight(1.5f);
         rotate(atan2(y_vector, x_vector));
         triangle(0, 0, -8, 4, -8, -4);
         popMatrix();
