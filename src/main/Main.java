@@ -69,6 +69,9 @@ public class Main extends PApplet {
 
         // Draw the chassis of the robot
         if (W != 0 && H != 0) drawChassis(W, H, width / 2, height / 2);
+
+        // Draw angle that the robot is trying to turn
+        if (x2 != 0) drawRotationDirection(width / 2, height / 2, x2);
     }
 
     /**
@@ -218,5 +221,45 @@ public class Main extends PApplet {
         rotate((float) -Math.atan2(H, W));
         text("r = " + new DecimalFormat("#.00").format(Math.sqrt(W * W + H * H)), 0, 0);
         popMatrix();
+    }
+
+    /**
+     * Draws a visualisation of the direction the robot is trying to turn at specified coordinates.
+     *
+     * @param x     The x coordinate of the center of the arc.
+     * @param y     The y coordinate of the center of the arc.
+     * @param angle The size of the angle (from -1 to 1 - -PI to +PI).
+     */
+    void drawRotationDirection(float x, float y, float angle) {
+        stroke(0);
+        strokeWeight(2f);
+
+        float start = -HALF_PI;
+        float end = -HALF_PI + angle * PI;
+
+        if (start > end) {
+            float temp = start;
+            start = end;
+            end = temp;
+        }
+
+        // For drawing the triangle of the arrow and the text
+        pushMatrix();
+        translate(x + cos(angle * PI - PI / 2) * 25, y + sin(angle * PI - PI / 2) * 25);
+
+        textAlign(LEFT, CENTER);
+        text(new DecimalFormat("0.00").format(angle), 7, 0);
+
+        if (angle > 0) rotate(angle * PI);
+        else rotate(angle * PI - PI);
+
+        strokeWeight(1.5f);
+        fill(0);
+        triangle(0, 0, -8, 4, -8, -4);
+
+        popMatrix();
+
+        noFill();
+        arc(x, y, 50, 50, start, end);
     }
 }
