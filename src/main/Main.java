@@ -115,6 +115,12 @@ public class Main extends PApplet {
         H *= normalizeWidthHeight;
         W *= normalizeWidthHeight;
 
+        // Restrict the W/H proportion to a circle
+        float lengthProportion = 1/ (float)Math.sqrt(W * W + H * H);
+
+        H *= lengthProportion;
+        W *= lengthProportion;
+
         // Variables to calculate the speeds of the motors
         float[] variables = new float[]{
                 x1 - x2 * H,
