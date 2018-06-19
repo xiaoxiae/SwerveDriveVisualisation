@@ -4,7 +4,7 @@ This project is a simple visualisation of the speeds and angles of the vectors o
 
 It serves both as a nice visualisation for an omnidirectional drive system, and as a help for those trying to understand the math behind a system like this.
 
-![](https://i.imgur.com/8rnkoyI.gif)
+![](img/preview.gif)
 
 ## Controls
 
@@ -12,7 +12,7 @@ The simulation features minimalistic controls:
 * **Left Click** resizes the chassis of the robot in the simulation.
 * **X axis** of the Logitech controller controls the left/right motion.
 * **Y axis** of the Logitech controller controls the forward/backward motion.
-* **Rotation axis** of the Logitech controller controls.
+* **Rotation axis** of the Logitech controller controls the rotation motion.
 
 ## Resources
 * [JInput](https://github.com/jinput/jinput) was the library used for the controller input.
