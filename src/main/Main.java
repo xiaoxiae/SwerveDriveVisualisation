@@ -177,7 +177,14 @@ public class Main extends PApplet {
         strokeWeight(1);
         fill(0);
         textAlign(LEFT, CENTER);
+        
+        //Draw the size of the vector
         text(new DecimalFormat("0.00").format(Math.sqrt(x_v * x_v + y_v * y_v)), x2 + 7, y2);
+
+        // Draw the angle that the vector is in
+        double angle = Math.toDegrees(Math.atan2(x_v, y_v) + PI);
+        if (angle > 180) angle -= 360;
+        text(new DecimalFormat("0.00").format(angle) + "°", x2 + 7, y2 + 13);
 
         // For drawing the triangle of the arrow and the text
         pushMatrix();
