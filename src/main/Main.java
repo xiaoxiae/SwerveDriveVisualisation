@@ -60,6 +60,7 @@ public class Main extends PApplet {
         // The speed vectors of the motors
         float[][] speedVectors = swerveCalculation(x1, y1, x2, W, H);
 
+        // Draw all motors and their vectors
         if (motorCoordinates != null) {
             for (int i = 0; i < motorCoordinates.length; i++) {
                 drawMotor(motorCoordinates[i][0], motorCoordinates[i][1], (float) Math.atan2(speedVectors[i][0], speedVectors[i][1]));
@@ -236,7 +237,7 @@ public class Main extends PApplet {
      * @param y     The y coordinate of the center of the arc.
      * @param angle The size of the angle (from -1 to 1 - -PI to +PI).
      */
-    void drawRotationDirection(float x, float y, float angle) {
+    private void drawRotationDirection(float x, float y, float angle) {
         stroke(0);
         strokeWeight(2f);
 
