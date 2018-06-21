@@ -68,12 +68,21 @@ class Input {
             values[1] = mappedY;
         }
 
-        // Shift all values using the c + (d - c) / (b - a) (value[i] - a) equation
-        for (int i = 0; i < values.length; i++) {
-            if (values[i] > deadzone) values[i] = 1 / (1 - deadzone) * (values[i] - deadzone);
-            else if (values[i] < -deadzone) values[i] = -1 + 1 / (-deadzone + 1) * (values[i] + 1);
-            else values[i] = 0;
+        // The magnitude of the x/y vector
+        float magnitude = (float)Math.sqrt(values[0] * values[0] + values[1] * values[1]);
+
+        // Scale the x and y axis vectors
+        if (magnitude < deadzone) {
+            values[0] = 0;
+            values[1] = 0;
+        } else {
+            values[0] *= (magnitude - deadzone) / (1 - deadzone);
+            values[1] *= (magnitude - deadzone) / (1 - deadzone);
         }
+
+        // Scale the rotation axis
+        if (Math.abs(values[2]) < deadzone) values[2] = 0;
+        else values[2] *= (Math.abs(values[2]) - deadzone) / (1 - deadzone);
 
         return values;
     }
