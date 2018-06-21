@@ -111,16 +111,10 @@ public class Main extends PApplet {
      * @see <a href="https://www.chiefdelphi.com/media/papers/2426">Derivation of Inverse Kinematics for Swerve drive</a>
      */
     private float[][] swerveCalculation(float x1, float y1, float x2, float W, float H) {
-        // Change the values of W and H to be 1 at most
-        float normalizeWidthHeight = 1 / Math.max(W, H);
-        H *= normalizeWidthHeight;
-        W *= normalizeWidthHeight;
-
-        // Restrict the W/H proportion to a circle
-        float lengthProportion = 1/ (float)Math.sqrt(W * W + H * H);
-
-        H *= lengthProportion;
-        W *= lengthProportion;
+        // Normalize the W/H ratio
+        float vectorLength = (float)Math.sqrt(W * W + H * H);
+        H /= vectorLength;
+        W /= vectorLength;
 
         // Variables to calculate the speeds of the motors
         float[] variables = new float[]{
