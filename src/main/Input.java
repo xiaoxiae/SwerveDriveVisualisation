@@ -65,21 +65,14 @@ class Input {
             else values[i] = 0;
         }
 
-        // To prevent NaN in the results
+        // Map the square input to a circle input
+        // (see http://mathproofs.blogspot.com/2005/07/mapping-square-to-circle.html)
         if (values[0] != 0 && values[1] != 0) {
-            // A constant to scale the pair of coordinates to their maximum length (one or both will be one)
-            float maximumCoordDistanceConstant = 1 / (Math.max(Math.abs(values[0]), Math.abs(values[1])));
+            float mappedX = values[0] * (float) Math.sqrt(1 - 0.5 * values[1] * values[1]);
+            float mappedY = values[1] * (float) Math.sqrt(1 - 0.5 * values[0] * values[0]);
 
-            // Scale the newX and newY to their maximum length within the -1 and 1 range
-            float newX = values[0] * maximumCoordDistanceConstant;
-            float newY = values[1] * maximumCoordDistanceConstant;
-
-            // The proportion by which to multiply the original coordinates to scale them back
-            float lengthProportion = 1 / (float) Math.sqrt(newX * newX + newY * newY);
-
-            // Scale x1 and y1 to fit into the circle
-            values[0] *= lengthProportion;
-            values[1] *= lengthProportion;
+            values[0] = mappedX;
+            values[1] = mappedY;
         }
 
         return values;
