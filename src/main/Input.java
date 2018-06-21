@@ -58,32 +58,61 @@ class Input {
     float[] getValues() {
         float[] values = getRawValues();
 
-        // Map the square input to a circle input
-        // (see http://mathproofs.blogspot.com/2005/07/mapping-square-to-circle.html)
-        if (values[0] != 0 && values[1] != 0) {
-            float mappedX = values[0] * (float) Math.sqrt(1 - 0.5 * values[1] * values[1]);
-            float mappedY = values[1] * (float) Math.sqrt(1 - 0.5 * values[0] * values[0]);
+        // Maps the x and y inputs from a square to a circle and clears deadzone using scaled radial deadzone
+        float[] xyInputs = scaledRadialDeadzone(squareToCircle(new float[]{values[0], values[1]}));
 
-            values[0] = mappedX;
-            values[1] = mappedY;
-        }
+        // Scale the rotation axis by the deadzone
+        float zInput = scaleAxis(values[2]);
 
+        return new float[]{xyInputs[0], xyInputs[1], zInput};
+    }
+
+    /**
+     * Map the coordinate pair form a square to a circle.
+     *
+     * @param coords The coordinates of the point from the square.
+     * @return A float[2], where arr[0] is the x coordinate and arr[1] is the y coordinate mapped from square to a
+     * circle.
+     * @see <a href="http://mathproofs.blogspot.com/2005/07/mapping-square-to-circle.html">Mapping square to circle</a>
+     */
+    private float[] squareToCircle(float[] coords) {
+        float mappedX = coords[0] * (float) Math.sqrt(1 - (coords[1] * coords[1]) / 2);
+        float mappedY = coords[1] * (float) Math.sqrt(1 - (coords[0] * coords[0]) / 2);
+
+        return new float[]{mappedX, mappedY};
+    }
+
+    /**
+     * Scales the rotation axis by the dead zone.
+     *
+     * @param rotationAxis The value of the axis.
+     * @return The scaled value of the axis.
+     */
+    private float scaleAxis(float rotationAxis) {
+        if (Math.abs(rotationAxis) < deadzone) return 0;
+        else return rotationAxis * (Math.abs(rotationAxis) - deadzone) / (1 - deadzone);
+    }
+
+    /**
+     * Adjusts 2 axis inputs to include a deadzone.
+     *
+     * @param inputs The inputs to remove the dead zones from.
+     * @return The sanitized inputs.
+     * @see <a href="http://www.third-helix.com/2013/04/12/doing-thumbstick-dead-zones-right.html">Doing thumbstick dead zones right</a>
+     */
+    private float[] scaledRadialDeadzone(float[] inputs) {
         // The magnitude of the x/y vector
-        float magnitude = (float)Math.sqrt(values[0] * values[0] + values[1] * values[1]);
+        float magnitude = (float) Math.sqrt(inputs[0] * inputs[0] + inputs[1] * inputs[1]);
 
         // Scale the x and y axis vectors
         if (magnitude < deadzone) {
-            values[0] = 0;
-            values[1] = 0;
+            inputs[0] = 0;
+            inputs[1] = 0;
         } else {
-            values[0] *= (magnitude - deadzone) / (1 - deadzone);
-            values[1] *= (magnitude - deadzone) / (1 - deadzone);
+            inputs[0] *= (magnitude - deadzone) / (1 - deadzone);
+            inputs[1] *= (magnitude - deadzone) / (1 - deadzone);
         }
 
-        // Scale the rotation axis
-        if (Math.abs(values[2]) < deadzone) values[2] = 0;
-        else values[2] *= (Math.abs(values[2]) - deadzone) / (1 - deadzone);
-
-        return values;
+        return inputs;
     }
 }
