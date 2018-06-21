@@ -58,13 +58,6 @@ class Input {
     float[] getValues() {
         float[] values = getRawValues();
 
-        // Shift all values using the c + (d - c) / (b - a) (value[i] - a) equation
-        for (int i = 0; i < values.length; i++) {
-            if (values[i] > deadzone) values[i] = 1 / (1 - deadzone) * (values[i] - deadzone);
-            else if (values[i] < -deadzone) values[i] = -1 + 1 / (-deadzone + 1) * (values[i] + 1);
-            else values[i] = 0;
-        }
-
         // Map the square input to a circle input
         // (see http://mathproofs.blogspot.com/2005/07/mapping-square-to-circle.html)
         if (values[0] != 0 && values[1] != 0) {
@@ -73,6 +66,13 @@ class Input {
 
             values[0] = mappedX;
             values[1] = mappedY;
+        }
+
+        // Shift all values using the c + (d - c) / (b - a) (value[i] - a) equation
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] > deadzone) values[i] = 1 / (1 - deadzone) * (values[i] - deadzone);
+            else if (values[i] < -deadzone) values[i] = -1 + 1 / (-deadzone + 1) * (values[i] + 1);
+            else values[i] = 0;
         }
 
         return values;
